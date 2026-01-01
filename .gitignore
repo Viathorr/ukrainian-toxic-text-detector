@@ -1,8 +1,16 @@
 reports/
-data/
 logs/
-checkpoints/
 .vscode/
+
+data/*/*
+!data/*/*.gitkeep
+
+# Ignore all trained models and checkpoints
+checkpoints/
+models/
+*.pkl
+*.pth
+*.h5
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

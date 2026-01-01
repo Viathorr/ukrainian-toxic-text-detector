@@ -9,16 +9,18 @@ RAW_DIR = DATA_DIR / "01_raw"
 INTERIM_DIR = DATA_DIR / "02_interim"
 PROCESSED_DIR = DATA_DIR / "03_processed"
 
-ENGLISH_DIR = RAW_DIR / "english_data"
-JIGSAW_DIR_1 = ENGLISH_DIR / "jigsaw_toxic_comments"
-JIGSAW_DIR_2 = ENGLISH_DIR / "jigsaw_unintended_bias"
+J1_ROOT = RAW_DIR / "jigsaw_toxic_comments"
+JIGSAW_1 = {
+    "train": J1_ROOT / "train.csv",
+    "test": J1_ROOT / "test.csv",
+    "test_labels": J1_ROOT / "test_labels.csv",
+    "combined": J1_ROOT / "jigsaw_toxic_full.csv"
+}
 
-JIGSAW_1_TRAIN_PATH = JIGSAW_DIR_1 / "train.csv"
-JIGSAW_1_TEST_PATH = JIGSAW_DIR_1 / "test.csv"
-JIGSAW_1_TEST_LABELS_PATH = JIGSAW_DIR_1 / "test_labels.csv"
-
-JIGSAW_2_TRAIN_PATH = JIGSAW_DIR_2 / "train.csv"
-# JIGSAW_2_TEST_PRIVATE_PATH = JIGSAW_DIR_2 / "test_private_expanded.csv"
-# JIGSAW_2_TEST_PUBLIC_PATH = JIGSAW_DIR_2 / "test_public_expanded.csv"
+J2_ROOT = RAW_DIR / "jigsaw_unintended_bias"
+JIGSAW_2 = {
+    "train": J2_ROOT / "train.csv",
+    "combined": J2_ROOT / "jigsaw_bias_full.csv" 
+}
 
 # Other paths can be added here as needed

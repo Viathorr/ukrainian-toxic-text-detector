@@ -4,6 +4,7 @@ ROOT_DIR = Path(__file__).resolve().parent.parent.parent  # project root directo
 
 DATA_DIR = ROOT_DIR / "data"
 MODELS_DIR = ROOT_DIR / "models"
+LOGS_DIR = ROOT_DIR / "logs"
 
 # Data lifecycle folders
 RAW_DIR = DATA_DIR / "01_raw"

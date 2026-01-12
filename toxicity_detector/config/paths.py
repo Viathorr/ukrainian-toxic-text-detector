@@ -37,6 +37,8 @@ JIGSAW_INTERIM = {
 JIGSAW_PROCESSED = {
     "train": PROCESSED_DIR / "jigsaw" / "train.csv",
     "test": PROCESSED_DIR / "jigsaw" / "test.csv",
+    "train_ua": PROCESSED_DIR / "jigsaw" / "train_ua.csv",
+    "test_ua": PROCESSED_DIR / "jigsaw" / "test_ua.csv",
 }
 
 # Other paths can be added here as needed

@@ -271,7 +271,6 @@ def translate_jigsaw_comments(
         
         try:
             response = send_request(model_name, request_text)
-            logger.debug(f"Raw response: {response}")
             
             response_text = response["choices"][0]["message"]["content"]
             batch_translations = parse_response(response_text)
@@ -279,6 +278,7 @@ def translate_jigsaw_comments(
             # Validate we got translations
             if not batch_translations:
                 logger.error(f"No translations parsed from batch {i+1}")
+                logger.debug(f"Raw response: {response}")
                 continue
                 
             # Validate IDs match

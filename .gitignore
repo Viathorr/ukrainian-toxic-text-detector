@@ -5,6 +5,8 @@ logs/
 data/*/*
 !data/*/*.gitkeep
 
+toxicity_detector/data/*.ps1
+
 # Ignore all trained models and checkpoints
 checkpoints/
 models/

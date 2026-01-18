@@ -19,6 +19,8 @@ WIKI_CLEAN_REGEX = [
     r"^:+"                                                       # thread indentation (::::)
 ]
 
+# TODO: Add email pattern for removing emails
+
 def remove_wiki_elements(text: str) -> str:
     """
     Remove wiki-specific elements from the text.

@@ -34,6 +34,8 @@ def clean_jigsaw_for_translation(text: str) -> str:
     text = tc.remove_nonprintable(text)
     
     text = tc.remove_newlines_and_whitespace(text)
+    
+    return text
 
 def preprocess_jigsaw_dataset():
     """Preprocess the Jigsaw dataset for translation and save the cleaned data."""

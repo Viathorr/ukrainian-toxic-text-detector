@@ -203,11 +203,11 @@ def parse_response(response_text: str) -> list[dict]:
     pattern = re.compile(
         r"""
         \bid\b\s*[:=]\s*               # "id" with word boundary, followed by : or =
-        ["']?([a-zA-Z0-9_-]+)["']?     # Capture ID (with optional quotes)
+        ["']?(?P<id>[a-zA-Z0-9_-]+)["']?     # Capture ID (with optional quotes)
         .*?                            # Skip to translated field
         \btranslated\b\s*[:=]\s*       # "translated" with word boundary
         ["']?                          # Optional opening quote
-        (.+?)                          # Capture translation (non-greedy)
+        (?P<translated>.+?)                          # Capture translation (non-greedy)
         ["']?                          # Optional closing quote
         (?=\s*[,}\]]|$)                # Look ahead: comma, brace, bracket, or end
         """,

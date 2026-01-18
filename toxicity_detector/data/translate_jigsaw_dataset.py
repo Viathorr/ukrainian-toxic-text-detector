@@ -315,12 +315,12 @@ def main():
     en_df = pd.read_csv(en_path)
     logger.info(f"Loaded {len(en_df)} comments from {en_path}")
     
-    ua_path = JIGSAW_PROCESSED[f"{args.data_type}_ua"]
-    ua_df = pd.read_csv(ua_path) if ua_path.exists() else pd.DataFrame(columns=["id", "translated"])
-    logger.info(f"Loaded {len(ua_df)} existing translations from {ua_path}")
+    uk_path = JIGSAW_PROCESSED[f"{args.data_type}_uk"]
+    uk_df = pd.read_csv(uk_path) if uk_path.exists() else pd.DataFrame(columns=["id", "translated"])
+    logger.info(f"Loaded {len(uk_df)} existing translations from {uk_path}")
     
     # Count how many comments need translation
-    to_translate_df = en_df[~en_df["id"].isin(ua_df["id"])]
+    to_translate_df = en_df[~en_df["id"].isin(uk_df["id"])]
     
     if to_translate_df.empty:
         logger.info("No new comments to translate. Exiting.")
@@ -342,10 +342,10 @@ def main():
         sys.exit(1)
     
     # Merge translations back into existing Ukrainian dataframe
-    combined_df = pd.concat([ua_df, translated_df]).drop_duplicates(subset=["id"]).reset_index(drop=True)
-    combined_df.to_csv(ua_path, index=False)
+    combined_df = pd.concat([uk_df, translated_df]).drop_duplicates(subset=["id"]).reset_index(drop=True)
+    combined_df.to_csv(uk_path, index=False)
     
-    logger.info(f"Saved {len(translated_df)} new translations to {ua_path}")
+    logger.info(f"Saved {len(translated_df)} new translations to {uk_path}")
     logger.info(f"Total translations in file: {len(combined_df)}")
 
 

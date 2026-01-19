@@ -8,6 +8,8 @@ TAGS_REGEX = r"<[^>]+>"
 REPEATED_CHAR_REGEX = r"(.)\1{2,}"  # Matches any character repeated more than twice
 REPEATED_PUNCTUATION_REGEX = r"([^\w\s])\1+"  # Matches punctuation repeated more than once
 URL_REGEX = r"https?:\/\/\S+|www\.\S+"
+EMAIL_REGEX = r"\S+@\S+\.\S+"
+PHONE_NUMBER_REGEX = r"(\+?\d{1,2}\s?)?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{2}[\s.-]?\d{2}"
 WHITESPACE_REGEX = r"\s+"  # Matches any whitespace character (spaces, tabs, newlines)
 
 # Wiki elements regex patterns:
@@ -18,8 +20,6 @@ WIKI_CLEAN_REGEX = [
     r"\[\[.*?\]\]",                                               # [[links/files]]
     r"^:+"                                                       # thread indentation (::::)
 ]
-
-# TODO: Add email pattern for removing emails
 
 def remove_wiki_elements(text: str) -> str:
     """
@@ -34,9 +34,9 @@ def handle_mentions(text: str) -> str:
     """Replace @username with [USER]."""
     return re.sub(USERNAME_REGEX, "[USER]", text)
 
-def handle_hashtags(text: str) -> str:
-    """Replace #hashtag with hashtag."""
-    return re.sub(HASHTAG_REGEX, lambda x: x.group()[1:], text)
+def remove_hashtags(text: str) -> str:
+    """Remove hashtags."""
+    return re.sub(HASHTAG_REGEX, "", text)
 
 def remove_tags(text: str) -> str:
     """Remove HTML/XML tags from the text."""
@@ -76,9 +76,15 @@ def remove_repeated_sentences(text: str) -> str:
             
     return ' '.join(unique_sentences)
 
-def remove_urls(text: str) -> str:
-    """Replace URLs with [URL]."""
-    return re.sub(URL_REGEX, "[URL]", text, flags=re.MULTILINE)
+def handle_urls_emails(text: str) -> str:
+    """Replace URLs and emails with [URL] and [EMAIL]."""
+    text = re.sub(URL_REGEX, "[URL]", text, flags=re.MULTILINE)
+    text = re.sub(EMAIL_REGEX, "[EMAIL]", text, flags=re.MULTILINE)
+    return text
+
+def handle_phone_numbers(text: str) -> str:
+    """Replace phone numbers with [PHONE]."""
+    return re.sub(PHONE_NUMBER_REGEX, "[PHONE]", text)
 
 def convert_emojis_to_text(text: str) -> str:
     """Convert emojis to their text representation."""
@@ -89,6 +95,7 @@ def remove_newlines_and_whitespace(text: str) -> str:
     return re.sub(WHITESPACE_REGEX, ' ', text).strip()
 
 def remove_nonprintable(text: str) -> str:
+    """Remove non-printable characters from the text."""
     return ''.join(c for c in text if c.isprintable())
 
 def normalize_unicode(text: str) -> str:

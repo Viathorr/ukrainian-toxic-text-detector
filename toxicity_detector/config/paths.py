@@ -35,10 +35,13 @@ JIGSAW_INTERIM = {
 
 # Final processed datasets
 JIGSAW_PROCESSED = {
+    # Original English datasets
     "train": PROCESSED_DIR / "jigsaw" / "train.csv",
     "test": PROCESSED_DIR / "jigsaw" / "test.csv",
+    # Ukrainian translations (imbalanced - original 1:2 ratio)
     "train_uk": PROCESSED_DIR / "jigsaw" / "train_uk.csv",
     "test_uk": PROCESSED_DIR / "jigsaw" / "test_uk.csv",
+    # Ukrainian - binary balanced training (1:1 toxic:non-toxic)
+    "train_uk_bin": PROCESSED_DIR / "jigsaw" / "train_uk_bin.csv",
+    "test_uk_bin": PROCESSED_DIR / "jigsaw" / "test_uk_bin.csv",
 }
-
-# Other paths can be added here as needed

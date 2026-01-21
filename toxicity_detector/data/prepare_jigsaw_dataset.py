@@ -19,10 +19,11 @@ def clean_jigsaw_for_translation(text: str) -> str:
 
     text = tc.remove_wiki_elements(text)
     text = tc.remove_tags(text)
-    text = tc.remove_urls(text)
-
+    text = tc.remove_hashtags(text)
+    
+    text = tc.handle_urls_emails(text)
+    text = tc.handle_phone_numbers(text)
     text = tc.handle_mentions(text)
-    text = tc.handle_hashtags(text)
     text = tc.convert_emojis_to_text(text)
 
     text = tc.remove_repeated_sentences(text)

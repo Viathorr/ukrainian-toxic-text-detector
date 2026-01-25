@@ -10,6 +10,8 @@ LOGS_DIR = ROOT_DIR / "logs"
 RAW_DIR = DATA_DIR / "01_raw"
 INTERIM_DIR = DATA_DIR / "02_interim"
 PROCESSED_DIR = DATA_DIR / "03_processed"
+JIGSAW_DIR = "jigsaw"
+UKR_DIR = "uk_comments"
 
 # Jigsaw Toxic Comments Dataset (raw)
 JIGSAW_TOXIC_ROOT = RAW_DIR / "jigsaw_toxic_comments"
@@ -27,21 +29,39 @@ JIGSAW_BIAS_RAW = {
     "combined": JIGSAW_BIAS_ROOT / "jigsaw_bias_full.csv",
 }
 
+# Ukrainian comments (raw)
+UKR_RAW = {
+    "comments": RAW_DIR / UKR_DIR / "comments.csv",
+    "combined": RAW_DIR / UKR_DIR / "combined_comments.csv",  # only comments
+    "labels": RAW_DIR / UKR_DIR / "labels.csv",  # only labels
+}
+
 # Interim processed datasets
 JIGSAW_INTERIM = {
-    "train": INTERIM_DIR / "jigsaw" / "train.csv",
-    "test": INTERIM_DIR / "jigsaw" / "test.csv",
+    "train": INTERIM_DIR / JIGSAW_DIR / "train.csv",
+    "test": INTERIM_DIR / JIGSAW_DIR / "test.csv",
+}
+
+UKR_INTERIM = {
+    "comments": INTERIM_DIR / UKR_DIR / "comments.csv",
 }
 
 # Final processed datasets
+JIGSAW_PROCESSED_DIR = PROCESSED_DIR / JIGSAW_DIR
 JIGSAW_PROCESSED = {
     # Original English datasets
-    "train": PROCESSED_DIR / "jigsaw" / "train.csv",
-    "test": PROCESSED_DIR / "jigsaw" / "test.csv",
+    "train": JIGSAW_PROCESSED_DIR / "train.csv",
+    "test": JIGSAW_PROCESSED_DIR / "test.csv",
     # Ukrainian translations (imbalanced - original 1:2 ratio)
-    "train_uk": PROCESSED_DIR / "jigsaw" / "train_uk.csv",
-    "test_uk": PROCESSED_DIR / "jigsaw" / "test_uk.csv",
+    "train_uk": JIGSAW_PROCESSED_DIR / "train_uk.csv",
+    "test_uk": JIGSAW_PROCESSED_DIR / "test_uk.csv",
     # Ukrainian - binary balanced training (1:1 toxic:non-toxic)
-    "train_uk_bin": PROCESSED_DIR / "jigsaw" / "train_uk_bin.csv",
-    "test_uk_bin": PROCESSED_DIR / "jigsaw" / "test_uk_bin.csv",
+    "train_uk_bin": JIGSAW_PROCESSED_DIR / "train_uk_bin.csv",
+    "test_uk_bin": JIGSAW_PROCESSED_DIR / "test_uk_bin.csv",
+}
+
+UKR_PROCESSED_DIR = PROCESSED_DIR / UKR_DIR
+UKR_PROCESSED = {
+    "train": UKR_PROCESSED_DIR / "train.csv",
+    "test": UKR_PROCESSED_DIR / "test.csv",
 }

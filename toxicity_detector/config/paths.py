@@ -31,9 +31,10 @@ JIGSAW_BIAS_RAW = {
 
 # Ukrainian comments (raw)
 UKR_RAW = {
-    "comments": RAW_DIR / UKR_DIR / "comments.csv",
-    "combined": RAW_DIR / UKR_DIR / "combined_comments.csv",  # only comments
-    "labels": RAW_DIR / UKR_DIR / "labels.csv",  # only labels
+    "comments": RAW_DIR / UKR_DIR / "comments.csv",  # scraped comments (mostly toxic)
+    "combined": RAW_DIR / UKR_DIR / "combined_comments.csv",  # only (mostly) toxic comments
+    "non_toxic": RAW_DIR / UKR_DIR / "non_toxic_comments.csv",  # only non-toxic comments from HF dataset
+    "weak_labels": RAW_DIR / UKR_DIR / "weak_labels.csv"  # labels collected using weak supervision (only toxic comments)
 }
 
 # Interim processed datasets
@@ -44,6 +45,7 @@ JIGSAW_INTERIM = {
 
 UKR_INTERIM = {
     "comments": INTERIM_DIR / UKR_DIR / "comments.csv",
+    "labels": INTERIM_DIR / UKR_DIR / "labels.csv"
 }
 
 # Final processed datasets

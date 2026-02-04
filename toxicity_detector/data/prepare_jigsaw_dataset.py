@@ -17,24 +17,14 @@ def clean_jigsaw_for_translation(text: str) -> str:
     if not isinstance(text, str):
         return ""
 
-    text = tc.remove_wiki_elements(text)
-    text = tc.remove_tags(text)
-    text = tc.remove_hashtags(text)
+    preprocessor = tc.TextPreprocessor(
+        remove_wiki_elements=True,
+        remove_nonprintable_characters=True,
+        remove_repeated_sentences=True,
+        remove_repeated_chunks=True
+    )
     
-    text = tc.handle_urls_emails(text)
-    text = tc.handle_phone_numbers(text)
-    text = tc.handle_mentions(text)
-    text = tc.convert_emojis_to_text(text)
-
-    text = tc.remove_repeated_sentences(text)
-    text = tc.remove_repetitive_chunks(text)
-    text = tc.reduce_repetitions(text)
-    text = tc.remove_repetitive_punctuation(text)
-    
-    text = tc.normalize_unicode(text)
-    text = tc.remove_nonprintable(text)
-    
-    text = tc.remove_newlines_and_whitespace(text)
+    text = preprocessor.clean_text(text)
     
     return text
 

@@ -44,8 +44,9 @@ JIGSAW_INTERIM = {
 }
 
 UKR_INTERIM = {
-    "comments": INTERIM_DIR / UKR_DIR / "comments.csv",
-    "labels": INTERIM_DIR / UKR_DIR / "labels.csv"
+    "train": INTERIM_DIR / UKR_DIR / "train.csv",
+    "labels": INTERIM_DIR / UKR_DIR / "train_labels.csv",
+    "test": INTERIM_DIR / UKR_DIR / "test.csv",
 }
 
 # Final processed datasets

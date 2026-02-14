@@ -4,8 +4,9 @@ import argparse
 import pandas as pd
 
 from toxicity_detector.utils.logger import setup_logger
-from toxicity_detector.config.paths import JIGSAW_PROCESSED, UKR_INTERIM, UKR_PROCESSED, LOGS_DIR
 from toxicity_detector.utils.text_cleaning import TextPreprocessor
+from toxicity_detector.config.paths import JIGSAW_PROCESSED, UKR_INTERIM, UKR_PROCESSED, LOGS_DIR
+from toxicity_detector.config.labels import LABELS_EN, TEXT_COL
 
 # Set up logger
 log_file_path = LOGS_DIR / "preprocess_dataset.log"
@@ -30,7 +31,7 @@ def parse_args():
     return parser.parse_args()
 
 def preprocess_dataset(data_name, data_kind):
-    preprocessor = TextPreprocessor()
+    preprocessor = TextPreprocessor(lowercase=True)
 
     logger.info(f"Preprocessing {data_kind} {data_name} data...")
 
@@ -42,13 +43,19 @@ def preprocess_dataset(data_name, data_kind):
             # Jigsaw comments were cleaned prior to translation;
             # this step applies post-translation normalization to ensure consistency
             data["translated"] = data["translated"].apply(preprocessor.clean_text)
+            data.rename(columns={"translated": TEXT_COL}, inplace=True)
+            
+            # Remove useless columns
+            cols_to_drop = [col for col in data.columns if col not in ["id", TEXT_COL] + LABELS_EN]
+            data = data.drop(columns=cols_to_drop)
+            
             data.to_csv(JIGSAW_PROCESSED[data_name], index=False)
             logger.info(f"Saved to {JIGSAW_PROCESSED[data_name]}")
         elif data_kind == "ukr":
             path = UKR_INTERIM[data_name]
             data = pd.read_csv(path)
 
-            data["comment"] = data["comment"].apply(preprocessor.clean_text)
+            data[TEXT_COL] = data[TEXT_COL].apply(preprocessor.clean_text)
             data.to_csv(UKR_PROCESSED[data_name], index=False)
             logger.info(f"Saved to {UKR_PROCESSED[data_name]}")
         else:

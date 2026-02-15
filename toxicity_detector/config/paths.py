@@ -6,6 +6,8 @@ DATA_DIR = ROOT_DIR / "data"
 MODELS_DIR = ROOT_DIR / "models"
 LOGS_DIR = ROOT_DIR / "logs"
 
+# === Dataset paths and structure ===
+
 # Data lifecycle folders
 RAW_DIR = DATA_DIR / "01_raw"
 INTERIM_DIR = DATA_DIR / "02_interim"
@@ -68,3 +70,26 @@ UKR_PROCESSED = {
     "train": UKR_PROCESSED_DIR / "train.csv",
     "test": UKR_PROCESSED_DIR / "test.csv",
 }
+
+# === Model paths and structure ===
+
+TRAIN_LOGS_DIR = LOGS_DIR / "train"
+OUTPUT_MODELS_DIR = MODELS_DIR / "output"
+
+def get_model_path(version: int, dataset: str = "jigsaw") -> Path:
+    """
+    Returns the path to the model with the given version.
+    
+    Parameters
+    ----------
+    version : int
+        Version number of the model.
+    dataset : str, optional
+        Name of the dataset. Default is "jigsaw".
+        
+    Returns
+    -------
+    Path
+        Path to the model directory.
+    """
+    return MODELS_DIR / f"xlm-roberta-{dataset}-v{version}"

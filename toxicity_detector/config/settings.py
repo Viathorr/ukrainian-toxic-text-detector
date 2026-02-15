@@ -10,11 +10,15 @@ WANDB_API_KEY = dotenv.get_key(ENV_FILE, "WANDB_API_KEY")
 HF_TOKEN = dotenv.get_key(ENV_FILE, "HF_TOKEN")
 
 # WandB Settings
-WANDB_PROJECT_NAME = "Ukrainian Toxic Comments Classification"
+WANDB_PROJECT = dotenv.get_key(ENV_FILE, "WANDB_PROJECT")
+WANDB_RUN_NAME_PREFIX = dotenv.get_key(ENV_FILE, "WANDB_RUN_NAME_PREFIX")
 
-# API Endpoints
-OPENROUTER_API_URL = "https://openrouter.ai/api/v1/chat/completions"
+# Hugging Face Settings
+HF_USERNAME = dotenv.get_key(ENV_FILE, "HF_USERNAME")
+HF_MODEL_PREFIX = dotenv.get_key(ENV_FILE, "HF_MODEL_PREFIX")
 
+# OpenRouter Settings
+OPENROUTER_API_URL = dotenv.get_key(ENV_FILE, "OPENROUTER_API_URL")
 OPENROUTER_HEADERS = {
     "Authorization": f"Bearer {OPENROUTER_API_KEY}",
     "Content-Type": "application/json",

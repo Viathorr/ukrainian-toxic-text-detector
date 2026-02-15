@@ -12,7 +12,7 @@ class TrainingConfig:
     per_device_train_batch_size: int = 32
     per_device_eval_batch_size: int = 64
 
-    evaluation_strategy: str = "epoch"
+    eval_strategy: str = "epoch"
     save_strategy: str = "epoch"
 
     push_to_hub: bool = True
@@ -22,6 +22,5 @@ class TrainingConfig:
     logging_strategy: str = "steps"
     logging_steps: int = 500
 
-    report_to: str = "wandb"
     metric_for_best_model: str = "macro_f1"
     load_best_model_at_end: bool = True

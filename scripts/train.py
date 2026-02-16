@@ -184,7 +184,6 @@ def load_data(dataset: str, tokenizer: AutoTokenizer, max_length: int, seed: int
     return train_dataset, val_dataset
     
    
-
 def main():    
     args = parse_args()
     

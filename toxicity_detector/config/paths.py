@@ -74,6 +74,7 @@ UKR_PROCESSED = {
 # === Model paths and structure ===
 
 TRAIN_LOGS_DIR = LOGS_DIR / "train"
+EVAL_LOGS_DIR = LOGS_DIR / "evaluate"
 OUTPUT_MODELS_DIR = MODELS_DIR / "output"
 
 def get_model_path(version: int, dataset: str = "jigsaw") -> Path:

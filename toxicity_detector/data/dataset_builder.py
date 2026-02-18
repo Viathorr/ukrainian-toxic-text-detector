@@ -11,7 +11,8 @@ def create_dataset_from_csv(
     label_columns: List[str],
     tokenizer: PreTrainedTokenizer,
     max_length: int,
-    seed: int = 42
+    seed: int = 42,
+    remove_columns: bool = True
 ) -> Dataset:
     """
     Create HuggingFace Dataset from CSV file.
@@ -50,7 +51,7 @@ def create_dataset_from_csv(
     dataset = dataset.map(
         preprocess_fn,
         batched=True,
-        remove_columns=dataset.column_names
+        remove_columns=dataset.column_names if remove_columns else None
     )
     
     return dataset

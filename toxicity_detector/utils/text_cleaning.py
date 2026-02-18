@@ -20,6 +20,7 @@ WIKI_CLEAN_REGEX = [
     r"^:+"                                                       # thread indentation (::::)
 ]
 
+
 def remove_wiki_elements(text: str) -> str:
     """
     Remove wiki-specific elements from the text.

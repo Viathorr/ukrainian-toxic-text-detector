@@ -1,5 +1,6 @@
 # Dataset labels in English (for model training and evaluation)
 LABELS_EN = ["toxic", "severe_toxic", "obscene", "threat", "insult", "identity_hate"]
+TEXT_COL = "comment"
 
 # Primary label for binary classification
 PRIMARY_LABEL = "toxic"

@@ -11,6 +11,7 @@ from transformers import (
 from toxicity_detector.utils.logger import setup_logger
 from toxicity_detector.utils.evaluation import create_compute_metrics_fn
 from toxicity_detector.data.dataset_builder import create_dataset_from_csv
+from toxicity_detector.config.thresholds import get_threshold_list
 from toxicity_detector.config.labels import LABELS_EN, TEXT_COL
 from toxicity_detector.config.paths import (
     EVAL_LOGS_DIR,
@@ -44,6 +45,11 @@ def parse_args():
         type=int,
         default=1,
         help="Model version (default: 1)"
+    )
+    parser.add_argument(
+        "--use-thresholds",
+        action="store_true",
+        help="Use optimized per-label thresholds instead of default 0.5"
     )
 
     args = parser.parse_args()
@@ -80,7 +86,8 @@ def load_test_data(dataset: str, tokenizer, max_length: int = 128):
         text_column=TEXT_COL,
         label_columns=LABELS_EN,
         tokenizer=tokenizer,
-        max_length=max_length
+        max_length=max_length,
+        remove_columns=False
     )
     
     return test_dataset
@@ -114,10 +121,18 @@ def main():
     logger.info(f"Test samples: {len(test_dataset)}")
     
     data_collator = DataCollatorWithPadding(tokenizer=tokenizer)
+        
+    logger.info("Starting evaluation...")
     
-    compute_metrics = create_compute_metrics_fn(LABELS_EN)
+    if args.use_thresholds:
+        logger.info("Using optimized thresholds for evaluation.")
+        
+        threshold_list = get_threshold_list(label_names=LABELS_EN)
+        compute_metrics = create_compute_metrics_fn(LABELS_EN, label_thresholds=threshold_list)
+    else:
+        logger.info("Using default threshold of 0.5 for evaluation.")
+        compute_metrics = create_compute_metrics_fn(LABELS_EN)  # uses default 0.5 thresholds
     
-    # Trainer
     trainer = Trainer(
         model=model,
         args=TrainingArguments(output_dir="./tmp", per_device_eval_batch_size=32),
@@ -125,30 +140,42 @@ def main():
         eval_dataset=test_dataset,
         compute_metrics=compute_metrics
     )
-        
-    logger.info("Starting evaluation...")
+    
+    # Evaluate
     results = trainer.evaluate()
     
     logger.info("=" * 70)
     logger.info("Evaluation Results")
     logger.info("=" * 70)
-    logger.info(f"Test Macro F1:       {results.get('eval_macro_f1', 0):.4f}")
-    logger.info(f"Test Micro F1:       {results.get('eval_micro_f1', 0):.4f}")
-    logger.info(f"Test Macro Precision: {results.get('eval_macro_precision', 0):.4f}")
-    logger.info(f"Test Macro Recall:    {results.get('eval_macro_recall', 0):.4f}")
-    logger.info(f"Test Subset Accuracy: {results.get('eval_subset_accuracy', 0):.4f}")
-    logger.info("=" * 70)
     
-    logger.info("\nPer-Class F1 and AUC Scores:")
+    metrics_to_log = [
+        "macro_f1",
+        "micro_f1",
+        "macro_precision",
+        "macro_recall",
+        "subset_accuracy",
+        "hamming_loss"
+    ]
+
+    for metric in metrics_to_log:
+        logger.info(
+            f"Test {metric.replace('_', ' ').title():<20}: "
+            f"{results.get(f'eval_{metric}', 0):.4f}"
+        )
+
+    logger.info("=" * 70)
+    logger.info("Per-Class F1 and AUC Scores:")
     logger.info("-" * 70)
-    
+
     for label in LABELS_EN:
-        f1_score = results.get(f"eval_{label}_f1", 0)
-        auc_score = results.get(f"eval_{label}_auc", 0)
-        logger.info(f"{label:<15}: F1={f1_score:.4f}, AUC={auc_score:.4f}")
-    
+        logger.info(
+            f"{label:<15}: "
+            f"F1={results.get(f'eval_{label}_f1', 0):.4f}, "
+            f"AUC={results.get(f'eval_{label}_roc_auc', 0):.4f}, "
+            f"PR-AUC={results.get(f'eval_{label}_pr_auc', 0):.4f}"
+        )
+
     logger.info("=" * 70)
-    
     logger.info("Model evaluation complete.")
     
     

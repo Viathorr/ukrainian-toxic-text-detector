@@ -47,8 +47,10 @@ JIGSAW_INTERIM = {
 
 UKR_INTERIM = {
     "train": INTERIM_DIR / UKR_DIR / "train.csv",
+    # TODO: add validation set
+    "probs": INTERIM_DIR / UKR_DIR / "model_probs.csv",
     "labels": INTERIM_DIR / UKR_DIR / "train_labels.csv",
-    "test": INTERIM_DIR / UKR_DIR / "test.csv",
+    "test": INTERIM_DIR / UKR_DIR / "test.csv"
 }
 
 # Final processed datasets
@@ -68,7 +70,8 @@ JIGSAW_PROCESSED = {
 UKR_PROCESSED_DIR = PROCESSED_DIR / UKR_DIR
 UKR_PROCESSED = {
     "train": UKR_PROCESSED_DIR / "train.csv",
-    "test": UKR_PROCESSED_DIR / "test.csv",
+    "val": UKR_PROCESSED_DIR / "val.csv",
+    "test": UKR_PROCESSED_DIR / "test.csv"
 }
 
 # === Model paths and structure ===

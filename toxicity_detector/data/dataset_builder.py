@@ -7,6 +7,7 @@ from transformers import PreTrainedTokenizer
 
 def create_dataset_from_csv(
     csv_path: str,
+    id_column: str,
     text_column: str,
     label_columns: List[str],
     tokenizer: PreTrainedTokenizer,
@@ -21,6 +22,8 @@ def create_dataset_from_csv(
     ----------
     csv_path : str
         Path to CSV file
+    id_column : str
+        Name of ID column
     text_column : str
         Name of text column
     label_columns : List[str]
@@ -37,7 +40,11 @@ def create_dataset_from_csv(
     """
     df = pd.read_csv(csv_path)
     
-    dataset = Dataset.from_pandas(df[[text_column] + label_columns])
+    missing = set(label_columns) - set(df.columns)
+    if missing:
+        raise ValueError(f"Label columns not found in CSV: {missing}")
+    
+    dataset = Dataset.from_pandas(df[[id_column, text_column] + label_columns])
     dataset = dataset.shuffle(seed=seed)
     
     preprocess_fn = create_preprocess_fn(

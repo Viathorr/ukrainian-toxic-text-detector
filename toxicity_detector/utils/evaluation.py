@@ -47,6 +47,7 @@ def create_compute_metrics_fn(labels_columns: List[str], threshold: float = 0.5,
             - macro_recall: macro recall score
             - micro_f1: micro F1 score
             - subset_accuracy: subset accuracy score
+            - hamming_loss: hamming loss score
             - <label>_f1: per-class F1 score for each label in labels_columns
             - <label>_auc: per-class AUC score for each label in labels_columns
         """

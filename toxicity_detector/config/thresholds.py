@@ -1,5 +1,9 @@
 from toxicity_detector.config.labels import LABELS_EN
 
+# Uncertainty margin threshold
+MARGIN_THRESHOLD = 0.15  # |p_pred - 0.5| < MARGIN_THRESHOLD -> uncertain
+
+# Prediction thresholds
 DEFAULT_THRESHOLDS = {
     "toxic": 0.5,
     "severe_toxic": 0.4,

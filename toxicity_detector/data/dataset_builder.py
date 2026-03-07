@@ -103,10 +103,11 @@ def create_preprocess_fn(tokenizer: PreTrainedTokenizer, text_column: str, label
             max_length=max_length,
         )
 
-        tokenized["labels"] = [
-            [float(examples[label][i]) for label in label_columns]
-            for i in range(len(examples[text_column]))
-        ]
+        if label_columns:
+            tokenized["labels"] = [
+                [float(examples[label][i]) for label in label_columns]
+                for i in range(len(examples[text_column]))
+            ]
 
         return tokenized
 

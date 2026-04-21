@@ -16,8 +16,8 @@ from transformers import (
 )
 
 from toxicity_detector.utils.logger import setup_logger
-from toxicity_detector.utils.evaluation import create_compute_metrics_fn
-from toxicity_detector.utils.training import calculate_class_weights, WeightedLossTrainer
+from toxicity_detector.model.evaluation import create_compute_metrics_fn
+from toxicity_detector.model.training import calculate_class_weights, WeightedLossTrainer
 from toxicity_detector.config.model_config import ModelConfig
 from toxicity_detector.config.training_config import TrainingConfig
 from toxicity_detector.data.dataset_builder import create_dataset_from_csv

@@ -1,8 +1,9 @@
 import pandas as pd
 from tqdm import tqdm
+
 from toxicity_detector.config.paths import LOGS_DIR, JIGSAW_INTERIM, JIGSAW_PROCESSED
 from toxicity_detector.utils.logger import setup_logger
-from toxicity_detector.utils import text_cleaning as tc
+from toxicity_detector.data import text_cleaning as tc
 
 tqdm.pandas()
 

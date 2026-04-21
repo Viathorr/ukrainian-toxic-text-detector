@@ -2,11 +2,12 @@ reports/
 logs/
 wandb/
 .vscode/
+.gradio/
 
 data/*/*
 !data/*/*.gitkeep
 
-toxicity_detector/data/*.ps1
+data_prep/*.ps1
 
 # Ignore all trained models and checkpoints
 checkpoints/

@@ -4,7 +4,7 @@ import argparse
 import pandas as pd
 
 from toxicity_detector.utils.logger import setup_logger
-from toxicity_detector.utils.text_cleaning import TextPreprocessor
+from toxicity_detector.data.text_cleaning import TextPreprocessor
 from toxicity_detector.config.paths import JIGSAW_PROCESSED, UKR_INTERIM, UKR_PROCESSED, LOGS_DIR
 from toxicity_detector.config.labels import LABELS_EN, TEXT_COL
 

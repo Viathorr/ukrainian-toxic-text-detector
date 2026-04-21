@@ -9,7 +9,7 @@ from transformers import (
 )
 
 from toxicity_detector.utils.logger import setup_logger
-from toxicity_detector.utils.evaluation import create_compute_metrics_fn
+from toxicity_detector.model.evaluation import create_compute_metrics_fn
 from toxicity_detector.data.dataset_builder import create_dataset_from_csv
 from toxicity_detector.config.thresholds import get_threshold_list
 from toxicity_detector.config.labels import LABELS_EN, TEXT_COL

@@ -39,7 +39,7 @@ def predict(text: str, model: PreTrainedModel, tokenizer: PreTrainedTokenizer) -
         cleaned_text,
         return_tensors="pt",
         truncation=True,
-        max_length=model_config.max_length
+        max_length=model_config.max_seq_length
     )
     inputs = {key: value.to(device) for key, value in inputs.items()}
     

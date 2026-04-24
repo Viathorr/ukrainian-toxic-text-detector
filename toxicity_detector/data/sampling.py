@@ -119,11 +119,15 @@ def balance_binary_classes(
     df: pd.DataFrame,
     label_column: str,
     method: str = "downsample",
-    random_state: int = 42
+    random_state: int = 42,
+    identity_categories: list | None = None,
+    identity_fraction: float = 0.25,
 ) -> pd.DataFrame:
     """
     Balance binary classes using downsampling or upsampling.
-    
+    When downsampling, optionally preserves identity-diverse samples
+    from the negative class using select_comments_by_identity.
+
     Parameters
     ----------
     df : pd.DataFrame
@@ -134,7 +138,12 @@ def balance_binary_classes(
         Downsampling ("downsample") or upsampling ("upsample"). Default is "downsample".
     random_state : int, optional
         Random seed for reproducibility. Default is 42.
-    
+    identity_categories : list | None, optional
+        List of identity category columns to preserve during downsampling
+        of the negative (non-toxic) class. If None, identity-aware sampling is skipped.
+    identity_fraction : float, optional
+        Fraction of negative samples to fill with identity-diverse comments. Default is 0.25.
+
     Returns
     -------
     pd.DataFrame
@@ -142,27 +151,39 @@ def balance_binary_classes(
     """
     positive = df[df[label_column] > 0]
     negative = df[df[label_column] == 0]
-    
+
     if method == "downsample":
-        # Downsample majority to match minority
         n_samples = min(len(positive), len(negative))
+
+        if identity_categories:
+            n_identity_samples = int(n_samples * identity_fraction)
+            n_random_samples   = n_samples - n_identity_samples
+
+            # Select identity-diverse samples from the negative class
+            identity_sampled = select_comments_by_identity(
+                negative, identity_categories, n_identity_samples
+            )
+
+            # Fill the rest randomly from remaining negative samples
+            remaining_negative = negative.drop(index=identity_sampled.index)
+            n_random_samples   = min(n_random_samples, len(remaining_negative))
+            random_sampled     = remaining_negative.sample(
+                n=n_random_samples, random_state=random_state
+            )
+
+            negative_sampled = pd.concat([identity_sampled, random_sampled])
+        else:
+            negative_sampled = negative.sample(n=n_samples, random_state=random_state)
+
         positive_sampled = positive.sample(n=n_samples, random_state=random_state)
-        negative_sampled = negative.sample(n=n_samples, random_state=random_state)
+
     elif method == "upsample":
-        # Upsample minority to match majority
         n_samples = max(len(positive), len(negative))
-        positive_sampled = positive.sample(
-            n=n_samples, 
-            replace=True, 
-            random_state=random_state
-        )
-        negative_sampled = negative.sample(
-            n=n_samples, 
-            replace=True, 
-            random_state=random_state
-        )
+        positive_sampled = positive.sample(n=n_samples, replace=True, random_state=random_state)
+        negative_sampled = negative.sample(n=n_samples, replace=True, random_state=random_state)
+
     else:
         raise ValueError(f"Unknown method: {method}")
-    
+
     balanced_df = pd.concat([positive_sampled, negative_sampled])
     return balanced_df.sample(frac=1, random_state=random_state).reset_index(drop=True)

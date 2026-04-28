@@ -100,7 +100,7 @@ with gr.Blocks(title="Ukrainian Toxicity Detector") as demo:
         with gr.Column(scale=5):
             text_input = gr.Textbox(
                 label="Input Comment",
-                placeholder="Введіть коментар для аналізу…",
+                placeholder="Enter a comment in Ukrainian for analysis...",
                 lines=4,
             )
            
@@ -119,7 +119,6 @@ with gr.Blocks(title="Ukrainian Toxicity Detector") as demo:
             with gr.Row():
                 analyze_btn = gr.Button("Analyze", variant="primary")
                 clear_btn = gr.ClearButton([text_input], value="Clear")
-
             
 
         with gr.Column(scale=6):

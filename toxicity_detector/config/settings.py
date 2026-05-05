@@ -16,6 +16,7 @@ WANDB_RUN_NAME_PREFIX = dotenv.get_key(ENV_FILE, "WANDB_RUN_NAME_PREFIX")
 # Hugging Face Settings
 HF_USERNAME = dotenv.get_key(ENV_FILE, "HF_USERNAME")
 HF_MODEL_PREFIX = dotenv.get_key(ENV_FILE, "HF_MODEL_PREFIX")
+HF_MODEL_VERSION = int(dotenv.get_key(ENV_FILE, "HF_MODEL_VERSION"))
 
 # OpenRouter Settings
 OPENROUTER_API_URL = dotenv.get_key(ENV_FILE, "OPENROUTER_API_URL")

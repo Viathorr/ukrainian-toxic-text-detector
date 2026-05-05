@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "toxicity-detector"
 version = "0.1.0"
-description = "A package for detecting toxic comments"
+description = "Multi-label toxicity detection for Ukrainian-language comments"
 authors = [
     { name="Amina" }
 ]
@@ -13,7 +13,8 @@ requires-python = ">=3.9"
 dependencies = []
 
 [project.urls]
-Repository = "https://github.com/Viathorr/toxic-text-detector"
+Repository = "https://github.com/Viathorr/ukrainian-toxic-text-detector"
 
-[tool.setuptools]
-packages = ["toxicity_detector"]
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["toxicity_detector*"]

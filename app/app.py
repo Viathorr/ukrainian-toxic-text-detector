@@ -1,3 +1,6 @@
+import sys
+sys.path.insert(0, "/app")
+
 import gradio as gr
 import plotly.graph_objects as go
 
@@ -17,7 +20,7 @@ LABEL_COLORS = {
 }
 
 EXAMPLE_TEXTS = [
-    "Цей коментар абсолютно нормальний і доброзичливий.",
+    "Цей коментар абсолютно доброзичливий.",
     "З самого ранку повна хата людей і дітей!",
     "Я тебе вб'ю, якщо ти ще раз так скажеш."
 ]
@@ -89,7 +92,7 @@ def toggle_chart(current_visible):
     return gr.update(visible=not current_visible), not current_visible
 
 
-with gr.Blocks(title="Ukrainian Toxicity Detector") as demo:
+with gr.Blocks(title="Ukrainian Toxicity Detector", theme=gr.themes.Soft(primary_hue="sky")) as demo:
 
     gr.Markdown("""
     # 🛡️ Ukrainian Toxicity Detector
@@ -111,11 +114,13 @@ with gr.Blocks(title="Ukrainian Toxicity Detector") as demo:
                 choices=["Default", "Tuned"],
                 value="Default",
                 label="Threshold Mode",
-                info="""
-                **Default** — uses a fixed 0.5 threshold for all labels.
-                **Tuned** — uses per-label thresholds tuned on the validation set.
-                """
             )
+            
+            gr.Markdown("""
+            **Default** — uses a fixed 0.5 threshold for all labels.  
+            **Tuned** — uses per-label thresholds tuned on the validation set.
+            """)
+            
             with gr.Row():
                 analyze_btn = gr.Button("Analyze", variant="primary")
                 clear_btn = gr.ClearButton([text_input], value="Clear")
@@ -146,4 +151,4 @@ with gr.Blocks(title="Ukrainian Toxicity Detector") as demo:
 
 
 if __name__ == "__main__":
-    demo.launch(theme=gr.themes.Soft(primary_hue="sky"))
+    demo.launch()

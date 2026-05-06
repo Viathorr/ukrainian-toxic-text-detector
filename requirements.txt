@@ -1,4 +1,4 @@
--e .
+# -e .
 wandb
 plotly
 pandas
@@ -11,3 +11,5 @@ scikit-learn
 torch
 seaborn
 matplotlib
+tiktoken
+sentencepiece

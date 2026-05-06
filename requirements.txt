@@ -1,0 +1,13 @@
+-e .
+wandb
+plotly
+pandas
+datasets
+transformers
+numpy
+emoji
+scipy
+scikit-learn
+torch
+seaborn
+matplotlib

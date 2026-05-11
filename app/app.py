@@ -67,7 +67,7 @@ def build_verdict(binary: dict[str, int]) -> str:
     
     if toxic_labels:
         lines = "\n".join(f"  🔸 {label.upper()}" for label in toxic_labels if label != "toxic")
-        return f"🔴 The comment is toxic. It belongs to the following toxicity categories:\n{lines}"
+        return f"🔴 The comment is toxic." + (f"It belongs to the following toxicity categories:\n{lines}" if lines else "")
     return "🟢 The comment is non-toxic."
 
 

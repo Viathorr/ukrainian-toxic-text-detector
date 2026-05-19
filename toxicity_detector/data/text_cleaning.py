@@ -2,7 +2,7 @@ import re
 import unicodedata
 import emoji
 
-USERNAME_REGEX = r"@\w+"
+USERNAME_REGEX = r"(?<!\w)@\w+"
 HASHTAG_REGEX = r"#\w+"
 TAGS_REGEX = r"<[^>]+>"
 REPEATED_CHAR_REGEX = r"(.)\1{2,}"  # Matches any character repeated more than twice

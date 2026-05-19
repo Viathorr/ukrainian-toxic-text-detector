@@ -2,7 +2,7 @@ import sys
 sys.path.insert(0, "/app")
 
 import gradio as gr
-import plotly.graph_objects as go
+import matplotlib.pyplot as plt
 
 from toxicity_detector.model.predictor import predict, predict_with_thresholds
 from toxicity_detector.model.loader import load_model
@@ -26,36 +26,30 @@ EXAMPLE_TEXTS = [
 ]
 
 
-def build_chart(scores: dict[str, float]) -> go.Figure:
+def build_chart(scores: dict[str, float]) -> plt.Figure:
     labels = list(scores.keys())
-    probs  = list(scores.values())
+    probs  = [v * 100 for v in scores.values()]  
     colors = [LABEL_COLORS.get(l, "#4048b9") for l in labels]
 
-    fig = go.Figure(go.Bar(
-        x=labels,
-        y=probs,
-        marker=dict(color=colors, line=dict(width=0)),
-        text=[f"{p:.1%}" for p in probs],
-        textposition="outside",
-        cliponaxis=False,
-        hovertemplate="%{x}: %{y:.2%}<extra></extra>",
-    ))
-    fig.update_layout(
-        height=320,
-        margin=dict(l=20, r=20, t=10, b=40),
-        yaxis=dict(
-            range=[0, 1.12],
-            tickformat=".0%",
-            showgrid=True,
-            gridcolor="#e9ecef",
-            zeroline=False,
-        ),
-        xaxis=dict(tickfont=dict(size=13)),
-        plot_bgcolor="#ffffff",
-        paper_bgcolor="#ffffff",
-        font=dict(family="Inter, sans-serif", size=12, color="#343a40"),
-        showlegend=False,
-    )
+    fig, ax = plt.subplots(figsize=(8, 4))
+
+    bars = ax.bar(labels, probs, color=colors, alpha=0.85)
+
+    ax.set_ylabel("Probability (%)", fontsize=12)
+    ax.set_title("Toxicity Category Probabilities", fontsize=14, fontweight="bold")
+    ax.grid(axis="y", linestyle="--", alpha=0.6)
+    ax.set_ylim(0, 115)
+
+    for bar in bars:
+        height = bar.get_height()
+        ax.text(
+            bar.get_x() + bar.get_width() / 2,
+            height + 1,
+            f"{height:.1f}%",
+            ha="center", va="bottom", fontsize=10
+        )
+
+    plt.tight_layout()
     return fig
 
 
@@ -73,7 +67,7 @@ def build_verdict(binary: dict[str, int]) -> str:
 
 def classify(text: str, mode: str):
     if not text or not text.strip():
-        return None, "", gr.update(visible=False)
+        return gr.update(value=None, visible=False), "", False
 
     scores = predict(text, model, tokenizer)
     fig = build_chart(scores)
@@ -85,7 +79,7 @@ def classify(text: str, mode: str):
 
     verdict = build_verdict(binary)
 
-    return fig, verdict, gr.update(visible=False)   # chart hidden by default
+    return gr.update(value=fig, visible=False), verdict, False 
 
 
 def toggle_chart(current_visible):
@@ -123,8 +117,7 @@ with gr.Blocks(title="Ukrainian Toxicity Detector", theme=gr.themes.Soft(primary
             
             with gr.Row():
                 analyze_btn = gr.Button("Analyze", variant="primary")
-                clear_btn = gr.ClearButton([text_input], value="Clear")
-            
+                clear_btn = gr.ClearButton()
 
         with gr.Column(scale=6):
             verdict_out = gr.Textbox(label="Verdict", interactive=False)
@@ -133,15 +126,20 @@ with gr.Blocks(title="Ukrainian Toxicity Detector", theme=gr.themes.Soft(primary
             
     chart_visible = gr.State(False)
 
+    clear_btn.click(
+        fn=lambda: ("", "", gr.update(visible=False, value=None), False),
+        inputs=[],
+        outputs=[text_input, verdict_out, chart_out, chart_visible]
+    )
     analyze_btn.click(
         fn=classify,
         inputs=[text_input, mode_radio],
-        outputs=[chart_out, verdict_out, chart_out]
+        outputs=[chart_out, verdict_out, chart_visible]
     )
     text_input.submit(
         fn=classify,
         inputs=[text_input, mode_radio],
-        outputs=[chart_out, verdict_out, chart_out]
+        outputs=[chart_out, verdict_out, chart_visible]
     )
     toggle_btn.click(
         fn=toggle_chart,

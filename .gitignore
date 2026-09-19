@@ -3,6 +3,7 @@ logs/
 wandb/
 .vscode/
 .gradio/
+my_env
 
 data/*/*
 !data/*/*.gitkeep

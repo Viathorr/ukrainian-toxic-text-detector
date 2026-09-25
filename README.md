@@ -29,7 +29,7 @@ This project addresses the lack of NLP resources for the Ukrainian language by b
 
 ## 🚀 Approaches
 
-Three approaches were implemented and compared. Approaches [1](https://www.kaggle.com/code/viathorr/training-bilstm-for-uk-toxicity-classification) and [2](https://www.kaggle.com/code/viathorr/xlm-roberta-toxicity-classification) were explored in separate Kaggle notebooks and are not part of this repository. Only the best-performing approach (3) is implemented here.
+Three approaches were implemented and compared. Approaches [1](https://www.kaggle.com/code/viathorr/training-bilstm-for-uk-toxicity-classification) and [2](https://www.kaggle.com/code/viathorr/xlm-roberta-toxicity-classification) were explored in separate Kaggle notebooks and are not part of this repository. 
 
 ### 1. BiLSTM (Baseline)
 A recurrent neural network baseline using Bidirectional LSTM with pre-trained word embeddings.

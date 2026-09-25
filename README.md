@@ -40,6 +40,9 @@ The `xlm-roberta-base` model fine-tuned on the English Jigsaw dataset and evalua
 ### 3. XLM-RoBERTa — Fine-Tuned on Translated Data ⭐ Best
 The `xlm-roberta-base` model fine-tuned on the Jigsaw dataset **translated into Ukrainian**. This approach achieved the best results.
 
+### 4. TF-IDF + Logistic Regression 
+A classical multi-label baseline using word- and character-level TF-IDF features with one Logistic Regression classifier per toxicity category. 
+
 ***
 
 ## 📊 Results
@@ -48,6 +51,7 @@ The `xlm-roberta-base` model fine-tuned on the Jigsaw dataset **translated into 
 |---|---|
 | BiLSTM | 0.5568 |
 | EN XLM-R (zero-shot) | 0.5250 |
+| TF-IDF + Logistic Regression | 0.6443 |
 | **UK XLM-R (fine-tuned)** | **0.7237** |
 
 ### Per-Category F1-Score
@@ -56,6 +60,7 @@ The `xlm-roberta-base` model fine-tuned on the Jigsaw dataset **translated into 
 |---|---|---|---|---|---|---|
 | BiLSTM | 0.7507 | 0.4332 | 0.5836 | 0.5505 | 0.6629 | 0.3601 |
 | EN XLM-R (zero-shot) | 0.7971 | 0.0250 | 0.4921 | 0.6014 | 0.7150 | 0.5191 |
+| TF-IDF + Logistic Regression | 0.7781 | 0.5775 | 0.6863 | 0.66114 | 0.7129 | 0.5000 |
 | **UK XLM-R (fine-tuned)** | **0.8501** | **0.6383** | **0.7344** | **0.7135** | **0.7991** | **0.6066** |
 
 ***
